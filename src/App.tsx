@@ -1,10 +1,14 @@
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import MainPage from './pages/main'
 
 function App() {
 
   return (
     <div>
-      <h1>수피커</h1>
+      <Routes>
+        <Route path='/' element={<MainPage/>}/>
+      </Routes>
     </div>
   )
 }
