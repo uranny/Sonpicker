@@ -12,7 +12,8 @@ function SignCard({id, imgUrl, label, onClick }: SignCardProps) {
         <button key={id}
             className={`
                 flex flex-col
-                bg-white    
+                bg-white
+                w-32
                 pt-2 pr-2 pl-2 pb-2
                 rounded-2xl
                 border-slate-200
@@ -28,7 +29,7 @@ function SignCard({id, imgUrl, label, onClick }: SignCardProps) {
                 src={imgUrl}
                 alt={label}
             />
-            <p className="text-center text-2xl font-black text-black">{label}</p>
+            <p className="text-center text-2xl font-semibold text-black">{label}</p>
         </button>
     );
 }
