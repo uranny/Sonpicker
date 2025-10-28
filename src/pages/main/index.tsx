@@ -17,8 +17,18 @@ function MainPage() {
                                     id={value.id}
                                     imgUrl={value.imgUrl} 
                                     label={value.label}
+                                    explan={value.explan}
                                     onClick={() => {
-                                        navigate(`/sign/${value.id}`, {replace : false, state : {imgUrl : value.imgUrl, label : value.label}})
+                                        navigate(`/sign/${value.id}`, 
+                                            {
+                                                replace : false, 
+                                                state : {
+                                                    imgUrl : value.imgUrl, 
+                                                    label : value.label,
+                                                    explan : value.explan
+                                                }
+                                            }
+                                        )
                                     }}
                                 />
                             )

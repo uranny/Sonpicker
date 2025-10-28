@@ -1,15 +1,14 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import MainPage from './pages/main'
+import SignDetailPage from './pages/sign/detail/indext';
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/sign/:id" element={<MainPage />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/sign/:id" element={<SignDetailPage/>} />
+    </Routes>
   );
 }
 
