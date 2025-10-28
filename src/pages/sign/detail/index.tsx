@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import type { SignDetailPageProps } from "../../../types/page/sign/detail.type";
 import PageContainer from "../../../components/pagecontainer";
@@ -45,12 +45,12 @@ function SignDetailPage() {
                         <div className={`
                             absolute inset-0
                             flex flex-col justify-center items-center
-                            bg-[${Colors.second}]/60
+                            bg-white
                             backdrop-blur-sm
                             z-50 gap-8
                         `}>
-                            <SyncLoader loading={loading} color="#FFFFFF"/>
-                            <p className="text-2xl font-semibold text-white">
+                            <SyncLoader loading={loading} color={Colors.primary}/>
+                            <p className={`text-2xl font-semibold text-[${Colors.primary}]`}>
                                 로딩 중...
                             </p>
                         </div>
