@@ -3,14 +3,14 @@ import './App.css'
 import MainPage from './pages/main'
 
 function App() {
-
   return (
     <div>
       <Routes>
-        <Route path='/' element={<MainPage/>}/>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/sign/:id" element={<MainPage />} />
       </Routes>
     </div>
-  )
+  );
 }
 
 export default App

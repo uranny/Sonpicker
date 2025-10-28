@@ -1,8 +1,30 @@
+import { useNavigate } from "react-router-dom"
+import SignCard from "../../components/signcard"
+import { SignCardList } from "../../constants/SignCardList"
 
 function MainPage() {
+    const navigate = useNavigate()
     return(
-        <div>
-            <p>main</p>
+        <div className="flex-1 ml-40 mr-40">
+            <div className="flex flex-1 flex-col gap-4">
+                <p className="text-2xl font-bold text-black">자음•모음 수화 배우기</p>
+                <div className="flex flex-row flex-wrap gap-">
+                    {
+                        SignCardList.map((value) => {
+                            return (
+                                <SignCard 
+                                    id={value.id}
+                                    imgUrl={value.imgUrl} 
+                                    label={value.label}
+                                    onClick={() => {
+                                        navigate(`/sign/${value.id}`, {replace : true, state : {imgUrl : value.imgUrl, label : value.label}})
+                                    }}
+                                />
+                            )
+                        })
+                    }
+                </div>
+            </div>
         </div>
     )
 }
