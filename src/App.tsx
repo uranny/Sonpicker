@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import MainPage from './pages/main'
-import SignDetailPage from './pages/sign/detail/indext';
+import SignDetailPage from './pages/sign/detail';
 
 function App() {
   return (

@@ -1,10 +1,4 @@
-
-export type SignCardProps = {
-    id : number
-    imgUrl: string;
-    label: string;
-    onClick ?: () => void
-};
+import type { SignCardProps } from "../../types/component/signcard.type";
 
 function SignCard({id, imgUrl, label, onClick }: SignCardProps) {
 
