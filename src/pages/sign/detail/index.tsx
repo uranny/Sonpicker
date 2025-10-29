@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import type { SignDetailPageProps } from "../../../types/page/sign/detail.type";
 import PageContainer from "../../../components/pagecontainer";
@@ -8,20 +8,86 @@ import SearchIcon from "../../../assets/search.svg";
 import { SyncLoader } from "react-spinners";
 import Colors from "../../../styles/colors/Colors";
 
+import * as tmPose from "@teachablemachine/pose";
+import { mod } from "@tensorflow/tfjs";
+
 function SignDetailPage() {
     const location = useLocation();
     const props = location.state as SignDetailPageProps;
+
     const [showExplain, setShowExplain]  = useState(true)
     const [loading, setLoading] = useState(true)
+    const [successLogged, setSuccessLogged] = useState(false);
+    const [model, setModel] = useState<tmPose.CustomPoseNet | null>(null)
+    const [maxPred, setMaxPred] = useState<{className : string, probability : number} | null>(null)
 
     const webcamRef = useRef<Webcam>(null);
+    const rafId = useRef<number>(0)
+
     const handleShowExplain = useCallback(() => {
         setShowExplain(prev => !prev)
     }, [])
+
     const handleUserMedia = () => {
         console.log('연결 완료')
         setLoading(false)
     }
+
+    const loadModel = useCallback(async () => {
+        const URL = import.meta.env.VITE_MODEL_URL
+        const modelURL = URL + 'model.json'
+        const metadataURL = URL + "metadata.json";
+        const loadedModel = await tmPose.load(modelURL, metadataURL)
+        setModel(loadedModel)
+        await detectPose()
+    }, [])
+    const detectPose = async () => {
+        const currentWebcam = webcamRef.current;
+        if (!model || !currentWebcam) return;
+    
+        const video = currentWebcam.video;
+        if (video && video.readyState === 4) {
+            const { pose, posenetOutput } = await model.estimatePose(video);
+            const prediction = await model.predict(posenetOutput);
+    
+            // 📊 유사도 콘솔 출력
+            console.clear();
+            console.group("📊 자세 유사도");
+            prediction.forEach((p) => {
+                console.log(`${p.className}: ${(p.probability * 100).toFixed(2)}%`);
+            });
+            console.groupEnd();
+    
+            // 가장 높은 확률
+            const max = prediction.reduce(
+                (prev, current) => (prev.probability > current.probability ? prev : current),
+                prediction[0]
+            );
+            setMaxPred(max);
+    
+            // SuccessPose 감지 시 한 번만 로그
+            if (max.className === "SuccessPose" && max.probability > 0.8 && !successLogged) {
+                console.log("✅ 자세 감지 성공!");
+                setSuccessLogged(true);
+            }
+    
+            if (max.className !== "SuccessPose") {
+                setSuccessLogged(false);
+            }
+        }
+    
+        rafId.current = requestAnimationFrame(detectPose);
+    };
+    
+
+    useEffect(() => {
+        loadModel()
+    })
+
+    useEffect(() => {
+        detectPose()
+    }, [model])
+
     return (
         <PageContainer className="pt-16">
             <div
